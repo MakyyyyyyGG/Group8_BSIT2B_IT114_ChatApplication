@@ -35,6 +35,8 @@ app.get("/signup", function (req, res) {
 app.get("/index", function (req, res) {
   res.render("pages/index", { socketURL: defURL });
 });
+
+//make javascipt working as a separate file
 app.get("/index.js", function (req, res) {
   res.setHeader("Content-Type", "text/javascript");
   res.sendFile(path.join(__dirname, "index.js"));

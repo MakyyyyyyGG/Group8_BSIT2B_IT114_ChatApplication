@@ -1,6 +1,7 @@
 (function () {
   const app = document.querySelector(".app");
   const socket = io();
+  const notificationSound = new Audio("messenger.mp3");
 
   window.onload = function () {
     window.addEventListener("scroll", function (e) {
@@ -21,6 +22,7 @@
     });
   };
 
+  //user login phase
   app
     .querySelector(".join-screen #join-user")
     .addEventListener("click", function () {
@@ -34,6 +36,7 @@
       app.querySelector(".chat-screen").classList.add("active");
     });
 
+  //user chat
   app
     .querySelector(".chat-screen #send-message")
     .addEventListener("click", function () {
@@ -52,18 +55,22 @@
       app.querySelector(".chat-screen #message-input").value = "";
     });
 
+    //user exit, send, recieve mesaage
   app
     .querySelector(".chat-screen #exit-chat")
     .addEventListener("click", function () {
       socket.emit("exituser", uname);
       window.location.href = window.location.href;
     });
-
+  
   socket.on("update", function (update) {
     renderMessage("update", update);
+
   });
   socket.on("chat", function (message) {
     renderMessage("other", message);
+    notificationSound.play();
+
   });
 
   // Client-side
@@ -149,6 +156,7 @@
     });
   }
 
+  //user counter
   socket.on("usercnt", function (msg) {
     document.getElementById("count").innerHTML = msg;
   });
